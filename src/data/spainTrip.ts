@@ -7,6 +7,7 @@ export interface Activity {
   type: ActivityType;
   isFreeEntry?: boolean;
   freeEntryNote?: string;
+  aiCity?: string;
 }
 
 export interface TripDay {
@@ -89,7 +90,12 @@ export const TRIP_DAYS: TripDay[] = [
     id: 'd3', date: '2026-05-22', dayLabel: 'May 22 (Fri)', dayNumber: 3,
     city: 'Barcelona', cityEmoji: '🏛️',
     activities: [
-      { time: '9:00 AM', title: 'Tossa de Mar Day Trip', description: 'Coastal medieval walled town on the Costa Brava', type: 'sightseeing' },
+      { time: '8:45 AM', title: 'Bus to Tossa de Mar', description: 'Teisa/Alsa bus from Estació del Nord (Barcelona). ~90 min journey along the Costa Brava coast. Buy ticket at the station or online.', type: 'transport' },
+      { time: '10:00 AM', title: 'Vila Vella & Museu Municipal', description: "Enter the medieval old town through the arched gate. Museu Municipal houses Roman mosaics and a collection of 20th-century paintings. Free to walk the old town streets.", type: 'sightseeing' },
+      { time: '11:00 AM', title: 'Castle Fortress Walls', description: 'Walk the 12th-century medieval ramparts (Vila Vella fortified walls) for panoramic views of the turquoise coves below. The lighthouse at the top offers the best photo spot.', type: 'sightseeing' },
+      { time: '1:00 PM', title: 'Lunch in Tossa', description: 'Fresh seafood along the beachfront. Recommended: grilled fish, fideuà (seafood noodles), or local tapas near Platja Gran.', type: 'food', aiCity: 'Tossa de Mar' },
+      { time: '2:30 PM', title: 'Platja Gran Beach', description: 'Main beach — calm, clear water backed by the castle walls. Great for swimming. Smaller cove Platja Mar Menuda (5 min walk north) is quieter.', type: 'leisure' },
+      { time: '3:45 PM', title: 'Return Bus to Barcelona', description: 'Teisa/Alsa bus back to Estació del Nord. ~90 min. Check the return schedule at the bus stop near the main roundabout.', type: 'transport' },
       { time: '5:00 PM', title: 'Park Güell', description: "Gaudí's colorful mosaic park with panoramic city views", type: 'sightseeing' },
     ],
   },
@@ -97,7 +103,16 @@ export const TRIP_DAYS: TripDay[] = [
     id: 'd4', date: '2026-05-23', dayLabel: 'May 23 (Sat)', dayNumber: 4,
     city: 'Barcelona', cityEmoji: '🏛️',
     activities: [
-      { time: '9:00 AM', title: 'Montserrat Day Trip', description: 'R5 train from Plaça Espanya to the mountain monastery', type: 'sightseeing' },
+      { time: '7:45 AM', title: 'Head to Plaça Espanya', description: 'Take metro L1 or L3 to Espanya station. Head to the FGC (Ferrocarrils de la Generalitat) platform — separate from the metro, follow signs for FGC.', type: 'transport' },
+      { time: '8:32 AM', title: 'FGC R5 Train to Montserrat', description: 'Departs Plaça Espanya every hour at :32. Get off at Aeri de Montserrat station (~65 min journey). Validate your all-inclusive Montserrat ticket before boarding.', type: 'transport' },
+      { time: '9:40 AM', title: 'Cable Car (Aeri de Montserrat)', description: 'Board the aerial cable car at the station. ~5 min ride up the dramatic rocky mountainside to the monastery. Runs every 15 min. Stunning views of the serrated peaks.', type: 'sightseeing' },
+      { time: '9:50 AM', title: 'Atrium & Basilica Facade', description: 'Arrive at Plaça de Santa Maria — the main courtyard atrium. Admire the 16th-century Gothic facade and the Romanesque doorway of Sant Miquel. The atrium connects the main square to the Basilica entrance.', type: 'sightseeing' },
+      { time: '10:10 AM', title: 'Montserrat Museum', description: 'World-class collection across two floors: Egyptian & Near-Eastern antiquities (mummies, sarcophagi), and fine art including works by El Greco, Caravaggio, Monet, Picasso, and Dalí. Allow 60–90 min.', type: 'sightseeing' },
+      { time: '11:45 AM', title: 'Basilica & La Moreneta', description: "Enter the Basilica to see the Black Madonna (La Moreneta) — Catalonia's patron saint, housed in the Cambril chapel above the main altar. Queue moves steadily; arrive early to avoid crowds. The Basilica interior has beautiful mosaics and gilded altar.", type: 'sightseeing' },
+      { time: '12:30 PM', title: 'Lunch at the Monastery', description: "Cafeteria Self-Service or Restaurant Montserrat on the main plaza. Try the local Pa amb tomàquet (bread with tomato), Catalan stews, or the monastery's own wine and liqueur.", type: 'food', aiCity: 'Montserrat' },
+      { time: '1:45 PM', title: 'Sant Joan Funicular & Trails', description: 'Take the Sant Joan funicular up another 250 m to the top station. Short hike (20 min) to Sant Joan Chapel with breathtaking 360° views of the Pyrenees and Barcelona coast. Or hike down the Santa Cova path (45 min, 15 Mysteries rosary sculptures).', type: 'leisure' },
+      { time: '3:45 PM', title: 'Cable Car Back Down', description: 'Return to Aeri de Montserrat station via cable car. Allow 15–20 min walk from the monastery to the cable car station.', type: 'transport' },
+      { time: '4:44 PM', title: 'FGC R5 Train Back to Barcelona', description: 'Departs Aeri de Montserrat every hour at :44. ~65 min back to Plaça Espanya, Barcelona. Arrive ~5:50 PM.', type: 'transport' },
     ],
   },
   {

@@ -8,7 +8,7 @@ import * as Clipboard from 'expo-clipboard';
 import { fetchLocationDetails, LocationDetails, FoodRecommendation } from '../services/geminiService';
 
 export default function LocationDetailScreen({ route, navigation }: any) {
-  const { locationName, city, lang = 'en' } = route.params as { locationName: string; city: string; lang: 'en' | 'zh' };
+  const { locationName, city, lang = 'en', mode = 'default' } = route.params as { locationName: string; city: string; lang: 'en' | 'zh'; mode?: 'default' | 'food' };
 
   const [details, setDetails] = useState<LocationDetails | null>(null);
   const [loading, setLoading]   = useState(true);
@@ -24,7 +24,7 @@ export default function LocationDetailScreen({ route, navigation }: any) {
   const load = () => {
     setLoading(true);
     setError(null);
-    fetchLocationDetails(locationName, city, lang)
+    fetchLocationDetails(locationName, city, lang, mode)
       .then(d => { setDetails(d); setLoading(false); })
       .catch(e => { setError(e.message); setLoading(false); });
   };
@@ -73,18 +73,20 @@ export default function LocationDetailScreen({ route, navigation }: any) {
         </View>
       </View>
 
-      <View style={styles.metaRow}>
-        <View style={styles.metaChip}>
-          <Ionicons name="time-outline" size={14} color="#555" />
-          <Text style={styles.metaText}>{details!.duration}</Text>
+      {mode !== 'food' && (
+        <View style={styles.metaRow}>
+          <View style={styles.metaChip}>
+            <Ionicons name="time-outline" size={14} color="#555" />
+            <Text style={styles.metaText}>{details!.duration}</Text>
+          </View>
+          <View style={styles.metaChip}>
+            <Ionicons name="sunny-outline" size={14} color="#555" />
+            <Text style={styles.metaText}>{details!.bestTime}</Text>
+          </View>
         </View>
-        <View style={styles.metaChip}>
-          <Ionicons name="sunny-outline" size={14} color="#555" />
-          <Text style={styles.metaText}>{details!.bestTime}</Text>
-        </View>
-      </View>
+      )}
 
-      {details!.mustSee ? (
+      {mode !== 'food' && details!.mustSee ? (
         <View style={styles.mustSeeCard}>
           <View style={styles.mustSeeHeader}>
             <Ionicons name="star" size={16} color="#fff" />
@@ -94,11 +96,17 @@ export default function LocationDetailScreen({ route, navigation }: any) {
         </View>
       ) : null}
 
-      <Section icon="book-outline" title={lang === 'zh' ? '简介' : 'About'} color="#1565C0">
-        <Text variant="bodyMedium" style={styles.aboutText}>{details!.about}</Text>
-      </Section>
+      {mode !== 'food' && (
+        <Section icon="book-outline" title={lang === 'zh' ? '简介' : 'About'} color="#1565C0">
+          <Text variant="bodyMedium" style={styles.aboutText}>{details!.about}</Text>
+        </Section>
+      )}
 
-      <Section icon="star-outline" title={lang === 'zh' ? '亮点' : 'Highlights'} color="#2E7D32">
+      <Section
+        icon={mode === 'food' ? 'restaurant-outline' : 'star-outline'}
+        title={mode === 'food' ? (lang === 'zh' ? '必尝美食' : 'Must-Try Dishes') : (lang === 'zh' ? '亮点' : 'Highlights')}
+        color="#2E7D32"
+      >
         {details!.highlights.map((h, i) => (
           <View key={i} style={styles.bulletRow}>
             <Text style={[styles.bullet, { color: '#2E7D32' }]}>●</Text>
@@ -107,7 +115,7 @@ export default function LocationDetailScreen({ route, navigation }: any) {
         ))}
       </Section>
 
-      <Section icon="bulb-outline" title={lang === 'zh' ? '游览贴士' : 'Visitor Tips'} color="#E65100">
+      <Section icon="bulb-outline" title={lang === 'zh' ? (mode === 'food' ? '用餐小贴士' : '游览贴士') : (mode === 'food' ? 'Dining Tips' : 'Visitor Tips')} color="#E65100">
         {details!.tips.map((tip, i) => (
           <View key={i} style={styles.bulletRow}>
             <Text style={[styles.bullet, { color: '#E65100' }]}>●</Text>
@@ -116,28 +124,30 @@ export default function LocationDetailScreen({ route, navigation }: any) {
         ))}
       </Section>
 
-      {details!.gettingThere ? (
+      {mode !== 'food' && details!.gettingThere ? (
         <Section icon="navigate-outline" title={lang === 'zh' ? '如何前往' : 'Getting There'} color="#00695C">
           <Text variant="bodyMedium" style={styles.aboutText}>{details!.gettingThere}</Text>
         </Section>
       ) : null}
 
       {details!.nearbyFood?.length > 0 && (
-        <Section icon="restaurant-outline" title={lang === 'zh' ? '附近餐厅' : 'Nearby Food'} color="#6A1B9A">
+        <Section icon="restaurant-outline" title={lang === 'zh' ? (mode === 'food' ? '餐厅推荐' : '附近餐厅') : (mode === 'food' ? 'Restaurant Recommendations' : 'Nearby Food')} color="#6A1B9A">
           {details!.nearbyFood.map((item: FoodRecommendation, i: number) => (
             <View key={i} style={styles.foodCard}>
               <View style={styles.foodCardTop}>
                 <Text style={styles.foodName}>{item.name}</Text>
-                <View style={styles.foodMeta}>
-                  <Text style={styles.foodDistance}>{item.distance}</Text>
-                  <TouchableOpacity onPress={() => copyFoodName(item.name, i)} hitSlop={8}>
-                    <Ionicons
-                      name={copiedIndex === i ? 'checkmark-circle' : 'copy-outline'}
-                      size={16}
-                      color={copiedIndex === i ? '#2E7D32' : '#7B1FA2'}
-                    />
-                  </TouchableOpacity>
-                </View>
+                <TouchableOpacity onPress={() => copyFoodName(item.name, i)} hitSlop={8}>
+                  <Ionicons
+                    name={copiedIndex === i ? 'checkmark-circle' : 'copy-outline'}
+                    size={16}
+                    color={copiedIndex === i ? '#2E7D32' : '#7B1FA2'}
+                  />
+                </TouchableOpacity>
+              </View>
+              <View style={styles.foodMetaRow}>
+                {item.stars ? <Text style={styles.foodStars}>{item.stars}</Text> : null}
+                {item.price ? <Text style={styles.foodPrice}>{item.price}</Text> : null}
+                <Text style={styles.foodDistance}>{item.distance}</Text>
               </View>
               <Text style={styles.foodDish}>{item.dish}</Text>
               <Text style={styles.foodVibe}>{item.vibe}</Text>
@@ -204,8 +214,10 @@ const styles = StyleSheet.create({
   bulletText:   { flex: 1, color: '#333', lineHeight: 22 },
   foodCard:     { backgroundColor: '#f3e8ff', borderRadius: 10, padding: 10, gap: 3 },
   foodCardTop:  { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  foodMeta:     { flexDirection: 'row', alignItems: 'center', gap: 8 },
+  foodMetaRow:  { flexDirection: 'row', alignItems: 'center', gap: 8, flexWrap: 'wrap' },
   foodName:     { fontWeight: '700', color: '#4A148C', fontSize: 14, flex: 1 },
+  foodStars:    { fontSize: 12, color: '#F9A825', fontWeight: '700' },
+  foodPrice:    { fontSize: 12, color: '#2E7D32', fontWeight: '600' },
   foodDistance: { fontSize: 11, color: '#7B1FA2', fontWeight: '600' },
   foodDish:     { fontSize: 13, color: '#333', fontStyle: 'italic' },
   foodVibe:     { fontSize: 12, color: '#666' },

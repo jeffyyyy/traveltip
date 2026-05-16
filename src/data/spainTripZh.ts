@@ -17,12 +17,26 @@ export const ACTIVITY_TITLES_ZH: Record<string, string> = {
   'd2_3': '圣家堂',
   'd2_4': '毕加索博物馆',
 
-  // Day 3 - Barcelona (Tossa + Park Güell)
-  'd3_0': '托萨德马尔一日游',
-  'd3_1': '桂尔公园',
+  // Day 3 - Barcelona (Tossa de Mar day trip + Park Güell) — 7 activities
+  'd3_0': '乘巴士前往托萨德马尔',
+  'd3_1': '老城区 & 市立博物馆',
+  'd3_2': '古城墙漫步',
+  'd3_3': '托萨午饭',
+  'd3_4': '大海滩（Platja Gran）',
+  'd3_5': '乘巴士返回巴塞罗那',
+  'd3_6': '桂尔公园',
 
-  // Day 4 - Barcelona (Montserrat)
-  'd4_0': '蒙特塞拉特一日游',
+  // Day 4 - Barcelona (Montserrat full day) — 10 activities
+  'd4_0': '前往西班牙广场',
+  'd4_1': 'FGC R5火车前往蒙特塞拉特',
+  'd4_2': '缆车（Aeri de Montserrat）',
+  'd4_3': '中庭 & 大教堂正面',
+  'd4_4': '大教堂 & 黑圣母',
+  'd4_5': '蒙特塞拉特博物馆',
+  'd4_6': '修道院午饭',
+  'd4_7': '圣胡安缆车 & 山顶徒步',
+  'd4_8': '乘缆车下山',
+  'd4_9': 'FGC R5火车返回巴塞罗那',
 
   // Day 5 - Granada (arrive)
   'd5_0': '飞往格拉纳达',

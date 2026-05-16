@@ -7,6 +7,8 @@ export interface FoodRecommendation {
   dish: string;
   vibe: string;
   distance: string;
+  stars: string;
+  price: string;
 }
 
 export interface LocationDetails {
@@ -59,8 +61,10 @@ async function callGemini(model: string, prompt: string, retries = 2): Promise<s
                     dish:     { type: 'STRING' },
                     vibe:     { type: 'STRING' },
                     distance: { type: 'STRING' },
+                    stars:    { type: 'STRING' },
+                    price:    { type: 'STRING' },
                   },
-                  required: ['name', 'dish', 'vibe', 'distance'],
+                  required: ['name', 'dish', 'vibe', 'distance', 'stars', 'price'],
                 },
               },
               funFact:     { type: 'STRING' },
@@ -93,8 +97,9 @@ export async function fetchLocationDetails(
   name: string,
   city: string,
   lang: 'en' | 'zh' = 'en',
+  mode: 'default' | 'food' = 'default',
 ): Promise<LocationDetails> {
-  const cacheKey = `${name}::${city}::${lang}`;
+  const cacheKey = `${name}::${city}::${lang}::${mode}`;
   if (cache.has(cacheKey)) return cache.get(cacheKey)!;
 
   if (!API_KEY) throw new Error('EXPO_PUBLIC_GEMINI_API_KEY is not set in .env');
@@ -103,7 +108,34 @@ export async function fetchLocationDetails(
     ? '请用中文回答。'
     : 'Respond in English.';
 
-  const prompt = `You are a travel guide. Tell me about "${name}" in ${city}, Spain. ${langInstruction}
+  const prompt = mode === 'food'
+    ? `You are a local food expert. I am having "${name}" in ${city}, Spain. ${langInstruction}
+Recommend the best restaurants and food options. Favour places that are: well-regarded by locals, authentic, highly rated, NOT tourist traps.
+For "nearbyFood", return 6 entries: 4 local Spanish/regional places and 1 Japanese and 1 Chinese restaurant.
+For "tips", give practical dining tips (e.g. reservation advice, best dishes, dietary options, meal times).
+For "highlights", list 4 must-try local dishes or food experiences in ${city}.
+For "funFact", share a fun fact about the local food culture or a signature dish.
+Leave "mustSee", "about", "bestTime", "duration", "gettingThere" as empty strings.
+Respond ONLY with valid JSON — no markdown, no code fences — in this exact format:
+{
+  "mustSee": "",
+  "about": "",
+  "highlights": ["must-try dish or food experience 1", "dish 2", "dish 3", "dish 4"],
+  "tips": ["dining tip 1", "tip 2", "tip 3"],
+  "bestTime": "",
+  "duration": "",
+  "gettingThere": "",
+  "nearbyFood": [
+    { "name": "local Spanish place 1", "dish": "signature dish to order", "vibe": "e.g. lively tapas bar", "distance": "e.g. 3-min walk", "stars": "e.g. 4.5 ⭐", "price": "e.g. €10–15/person" },
+    { "name": "local Spanish place 2", "dish": "dish 2", "vibe": "vibe 2", "distance": "distance 2", "stars": "stars 2", "price": "price 2" },
+    { "name": "local Spanish place 3", "dish": "dish 3", "vibe": "vibe 3", "distance": "distance 3", "stars": "stars 3", "price": "price 3" },
+    { "name": "local Spanish place 4", "dish": "dish 4", "vibe": "vibe 4", "distance": "distance 4", "stars": "stars 4", "price": "price 4" },
+    { "name": "Japanese restaurant nearby", "dish": "recommended Japanese dish", "vibe": "e.g. cozy ramen shop", "distance": "distance 5", "stars": "stars 5", "price": "price 5" },
+    { "name": "Chinese restaurant nearby", "dish": "recommended Chinese dish", "vibe": "e.g. authentic dim sum", "distance": "distance 6", "stars": "stars 6", "price": "price 6" }
+  ],
+  "funFact": "one fun fact about local food culture or a signature dish"
+}`
+    : `You are a travel guide. Tell me about "${name}" in ${city}, Spain. ${langInstruction}
 For nearby food recommendations, favour places that are: well-regarded by locals, authentic, highly rated, NOT tourist traps, and within walking distance of the location.
 Respond ONLY with valid JSON — no markdown, no code fences — in this exact format:
 {
@@ -115,12 +147,12 @@ Respond ONLY with valid JSON — no markdown, no code fences — in this exact f
   "duration": "recommended visit duration e.g. 1–2 hours",
   "gettingThere": "how to reach it by public transport or on foot",
   "nearbyFood": [
-    { "name": "local Spanish place 1", "dish": "signature Spanish dish to order", "vibe": "e.g. lively tapas bar", "distance": "e.g. 3-min walk" },
-    { "name": "local Spanish place 2", "dish": "dish 2", "vibe": "vibe 2", "distance": "distance 2" },
-    { "name": "local Spanish place 3", "dish": "dish 3", "vibe": "vibe 3", "distance": "distance 3" },
-    { "name": "local Spanish place 4", "dish": "dish 4", "vibe": "vibe 4", "distance": "distance 4" },
-    { "name": "Japanese restaurant nearby", "dish": "recommended Japanese dish", "vibe": "e.g. cozy ramen shop", "distance": "distance 5" },
-    { "name": "Chinese restaurant nearby", "dish": "recommended Chinese dish", "vibe": "e.g. authentic dim sum", "distance": "distance 6" }
+    { "name": "local Spanish place 1", "dish": "signature Spanish dish to order", "vibe": "e.g. lively tapas bar", "distance": "e.g. 3-min walk", "stars": "e.g. 4.5 ⭐", "price": "e.g. €10–15/person" },
+    { "name": "local Spanish place 2", "dish": "dish 2", "vibe": "vibe 2", "distance": "distance 2", "stars": "stars 2", "price": "price 2" },
+    { "name": "local Spanish place 3", "dish": "dish 3", "vibe": "vibe 3", "distance": "distance 3", "stars": "stars 3", "price": "price 3" },
+    { "name": "local Spanish place 4", "dish": "dish 4", "vibe": "vibe 4", "distance": "distance 4", "stars": "stars 4", "price": "price 4" },
+    { "name": "Japanese restaurant nearby", "dish": "recommended Japanese dish", "vibe": "e.g. cozy ramen shop", "distance": "distance 5", "stars": "stars 5", "price": "price 5" },
+    { "name": "Chinese restaurant nearby", "dish": "recommended Chinese dish", "vibe": "e.g. authentic dim sum", "distance": "distance 6", "stars": "stars 6", "price": "price 6" }
   ],
   "funFact": "one surprising or little-known fact"
 }`;

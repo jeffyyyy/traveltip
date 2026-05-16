@@ -8,6 +8,8 @@ export const TICKET_ASSETS: Record<string, any> = {
   'barcelona-2026-05-21-11_15am': require('../../tickets/barcelona-2026-05-21-11_15am.pdf'),
   'barcelona-2026-05-21-3_45pm' : require('../../tickets/barcelona-2026-05-21-3_45pm.pdf'),
   'barcelona-2026-05-21-9_15am' : require('../../tickets/barcelona-2026-05-21-9_15am.pdf'),
+  'barcelona-2026-05-22-8_45am' : require('../../tickets/barcelona-2026-05-22-8_45am.pdf'),
+  'barcelona-2026-05-23-9_40am' : require('../../tickets/barcelona-2026-05-23-9_40am.pdf'),
   'córdoba-2026-05-26-12_48pm'  : require('../../tickets/córdoba-2026-05-26-12_48pm.pdf'),
   'córdoba-2026-05-26-3pm'      : require('../../tickets/córdoba-2026-05-26-3pm.pdf'),
   'granada-2026-05-24-12pm'     : require('../../tickets/granada-2026-05-24-12pm.pdf'),

@@ -36,7 +36,7 @@ function getActivityIcon(type: ActivityType, title: string): keyof typeof Ionico
 }
 
 const MAPS_TYPES: ActivityType[] = ['sightseeing', 'accommodation', 'leisure', 'food'];
-const AI_TYPES: ActivityType[] = ['sightseeing', 'leisure'];
+const AI_TYPES: ActivityType[] = ['sightseeing', 'leisure', 'food'];
 
 function openInMaps(query: string, city: string) {
   const q = encodeURIComponent(`${query}, ${city}, Spain`);
@@ -156,14 +156,17 @@ export default function DayDetailScreen({ route, navigation }: any) {
                       style={styles.aiBtn}
                       onPress={() => navigation.navigate('LocationDetail', {
                         locationName: activity.title,
-                        city: day.city,
+                        city: activity.aiCity ?? day.city,
                         lang,
+                        mode: activity.type === 'food' ? 'food' : 'default',
                       })}
                       activeOpacity={0.7}
                     >
                       <Ionicons name="sparkles" size={14} color="#6750A4" />
                       <Text style={styles.aiBtnText}>
-                        {lang === 'zh' ? 'AI详情' : 'AI Details'}
+                        {activity.type === 'food'
+                          ? (lang === 'zh' ? 'AI推荐' : 'AI Suggestions')
+                          : (lang === 'zh' ? 'AI详情' : 'AI Details')}
                       </Text>
                     </TouchableOpacity>
                   )}
