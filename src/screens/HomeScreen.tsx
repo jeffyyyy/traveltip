@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
+import { View, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Text, Card, Chip } from 'react-native-paper';
 import { CITIES, TRIP_DAYS, TRIP_START, HOTELS } from '../data/spainTrip';
@@ -24,7 +24,7 @@ function getTodayDay() {
   });
 }
 
-export default function HomeScreen() {
+export default function HomeScreen({ navigation }: any) {
   const { t, lang } = useLanguage();
   const daysUntil = useMemo(() => getDaysUntil(TRIP_START), []);
   const todayDay = useMemo(() => getTodayDay(), []);
@@ -72,13 +72,20 @@ export default function HomeScreen() {
       <Text variant="titleMedium" style={styles.sectionTitle}>{t('home.citiesTitle')}</Text>
       <View style={styles.cityGrid}>
         {CITIES.map(city => (
-          <Card key={city.name} style={styles.cityCard}>
-            <Card.Content style={styles.cityCardContent}>
-              <Text style={styles.cityEmoji}>{city.emoji}</Text>
-              <Text variant="titleSmall" style={styles.cityName}>{lang === 'zh' ? (CITY_NAMES_ZH[city.name] ?? city.name) : city.name}</Text>
-              <Text variant="bodySmall" style={styles.cityDays}>{city.days}</Text>
-            </Card.Content>
-          </Card>
+          <TouchableOpacity
+            key={city.name}
+            style={styles.cityCardWrapper}
+            onPress={() => navigation.navigate('CityDetail', { cityName: city.name })}
+            activeOpacity={0.8}
+          >
+            <Card style={styles.cityCard}>
+              <Card.Content style={styles.cityCardContent}>
+                <Text style={styles.cityEmoji}>{city.emoji}</Text>
+                <Text variant="titleSmall" style={styles.cityName}>{lang === 'zh' ? (CITY_NAMES_ZH[city.name] ?? city.name) : city.name}</Text>
+                <Text variant="bodySmall" style={styles.cityDays}>{city.days}</Text>
+              </Card.Content>
+            </Card>
+          </TouchableOpacity>
         ))}
       </View>
 
@@ -134,7 +141,8 @@ const styles = StyleSheet.create({
   cityLabel: { marginBottom: 8, color: '#6750A4' },
   activityLine: { color: '#444', marginBottom: 2 },
   cityGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginBottom: 16 },
-  cityCard: { width: '47%' },
+  cityCardWrapper: { width: '47%' },
+  cityCard: { width: '100%' },
   cityCardContent: { alignItems: 'center', paddingVertical: 12 },
   cityEmoji: { fontSize: 28, marginBottom: 4 },
   cityName: { fontWeight: '600' },

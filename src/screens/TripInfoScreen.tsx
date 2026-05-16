@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
+import { View, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { Text, Card, SegmentedButtons, Chip } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { HOTELS, TRANSPORT, TransportItem } from '../data/spainTrip';
+import { TICKET_ASSETS } from '../data/ticketRegistry';
 import { CITY_NAMES_ZH } from '../data/spainTripZh';
 import { useLanguage } from '../context/LanguageContext';
 
@@ -19,7 +20,7 @@ const TRANSPORT_COLOR: Record<TransportItem['type'], string> = {
   bus: '#E65100',
 };
 
-export default function TripInfoScreen() {
+export default function TripInfoScreen({ navigation }: any) {
   const { t, lang } = useLanguage();
   const [tab, setTab] = useState('transport');
 
@@ -65,6 +66,16 @@ export default function TripInfoScreen() {
                     </View>
                     {item.notes && (
                       <Text variant="bodySmall" style={styles.notes}>{item.notes}</Text>
+                    )}
+                    {item.ticketKey && TICKET_ASSETS[item.ticketKey] && (
+                      <TouchableOpacity
+                        style={styles.ticketBtn}
+                        onPress={() => navigation.navigate('TicketViewer', { ticketKey: item.ticketKey, title: lang === 'zh' ? '车票' : 'Ticket' })}
+                        activeOpacity={0.7}
+                      >
+                        <Ionicons name="ticket-outline" size={14} color="#E65100" />
+                        <Text style={styles.ticketBtnText}>{lang === 'zh' ? '查看车票' : 'View Ticket'}</Text>
+                      </TouchableOpacity>
                     )}
                   </View>
                 </Card.Content>
@@ -140,4 +151,6 @@ const styles = StyleSheet.create({
   dateValue: { fontWeight: '600', color: '#333' },
   nightsChip: { backgroundColor: '#ede7f6' },
   chipText: { fontSize: 12, lineHeight: 18 },
+  ticketBtn: { flexDirection: 'row', alignItems: 'center', gap: 4, marginTop: 8, alignSelf: 'flex-start', backgroundColor: '#fff3e0', paddingVertical: 4, paddingHorizontal: 8, borderRadius: 6 },
+  ticketBtnText: { fontSize: 12, color: '#E65100', fontWeight: '600', lineHeight: 18 },
 });
