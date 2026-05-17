@@ -42,10 +42,6 @@ module.exports = {
     plugins: [
       'expo-font',
       'expo-asset',
-      [
-        'react-native-maps',
-        { googleMapsApiKey },
-      ],
     ],
     extra: {
       eas: {
