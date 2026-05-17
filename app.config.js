@@ -23,6 +23,8 @@ module.exports = {
       infoPlist: {
         LSApplicationQueriesSchemes: ['comgooglemaps', 'googlemaps'],
         ITSAppUsesNonExemptEncryption: false,
+        NSLocationWhenInUseUsageDescription: 'Your location is used to show your position on the trip map.',
+        NSLocationAlwaysAndWhenInUseUsageDescription: 'Your location is used to show your position on the trip map.',
       },
     },
     android: {
