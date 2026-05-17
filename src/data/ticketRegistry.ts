@@ -12,8 +12,8 @@ export const TICKET_ASSETS: Record<string, any> = {
   'barcelona-2026-05-22-5pm'    : require('../../tickets/barcelona-2026-05-22-5pm.pdf'),
   'barcelona-2026-05-22-8_45am' : require('../../tickets/barcelona-2026-05-22-8_45am.pdf'),
   'barcelona-2026-05-23-9_40am' : require('../../tickets/barcelona-2026-05-23-9_40am.pdf'),
-  'córdoba-2026-05-26-12_48pm'  : require('../../tickets/córdoba-2026-05-26-12_48pm.pdf'),
-  'córdoba-2026-05-26-3pm'      : require('../../tickets/córdoba-2026-05-26-3pm.pdf'),
+  'cordoba-2026-05-26-12_48pm'  : require('../../tickets/cordoba-2026-05-26-12_48pm.pdf'),
+  'cordoba-2026-05-26-3pm'      : require('../../tickets/cordoba-2026-05-26-3pm.pdf'),
   'granada-2026-05-24-12pm'     : require('../../tickets/granada-2026-05-24-12pm.pdf'),
   'granada-2026-05-24-2_30pm'   : require('../../tickets/granada-2026-05-24-2_30pm.pdf'),
   'granada-2026-05-24-2pm'      : require('../../tickets/granada-2026-05-24-2pm.pdf'),
@@ -45,6 +45,7 @@ function timeToKey(time: string): string {
 
 // Returns the ticket asset for a given city, date, and activity time, or null if none.
 export function getTicket(city: string, date: string, time: string): any | null {
-  const key = `${city.toLowerCase()}-${date}-${timeToKey(time)}`;
+  const normalised = city.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  const key = `${normalised}-${date}-${timeToKey(time)}`;
   return TICKET_ASSETS[key] ?? null;
 }
