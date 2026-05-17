@@ -54,8 +54,8 @@ export default function PlacesScreen() {
           onValueChange={v => setView(v as 'list' | 'map')}
           style={styles.toggle}
           buttons={[
-            { value: 'list', label: 'Places', icon: 'format-list-bulleted' },
-            { value: 'map',  label: 'Route Map', icon: 'map-outline' },
+            { value: 'list', label: t('places.listTab'), icon: 'format-list-bulleted' },
+            { value: 'map',  label: t('places.mapTab'),  icon: 'map-outline' },
           ]}
         />
         {view === 'list' && (

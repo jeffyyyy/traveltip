@@ -54,9 +54,22 @@ const en: TranslationMap = {
   'info.tabTransport': '✈️ Transport',
   'info.tabHotels': '🏨 Hotels',
 
+  // Tab titles
+  'tab.trip':      'Trip',
+  'tab.days':      'Days',
+  'tab.places':    'Places',
+  'tab.info':      'Info',
+  'tab.settings':  'Settings',
+
+  // Navigation headers
+  'nav.back':      'Back',
+  'nav.ticket':    'Ticket',
+
   // Profile Screen
   'profile.title': 'Profile',
   'profile.switchLang': 'Switch to Chinese',
+  'places.listTab': 'Places',
+  'places.mapTab':  'Route Map',
 
   // Login / Auth
   'auth.welcomeBack': 'Welcome Back',
@@ -125,9 +138,22 @@ const zh: TranslationMap = {
   'info.tabTransport': '✈️ 交通',
   'info.tabHotels': '🏨 酒店',
 
+  // Tab titles
+  'tab.trip':      '行程',
+  'tab.days':      '日程',
+  'tab.places':    '景点',
+  'tab.info':      '信息',
+  'tab.settings':  '设置',
+
+  // Navigation headers
+  'nav.back':      '返回',
+  'nav.ticket':    '票务',
+
   // Profile Screen
   'profile.title': '个人资料',
   'profile.switchLang': '切换为英文',
+  'places.listTab': '景点',
+  'places.mapTab':  '路线图',
 
   // Login / Auth
   'auth.welcomeBack': '欢迎回来',

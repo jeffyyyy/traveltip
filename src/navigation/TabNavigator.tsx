@@ -2,6 +2,7 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Ionicons } from '@expo/vector-icons';
+import { useLanguage } from '../context/LanguageContext';
 import HomeScreen from '../screens/HomeScreen';
 import CityDetailScreen from '../screens/CityDetailScreen';
 import TicketViewerScreen from '../screens/TicketViewerScreen';
@@ -24,33 +25,36 @@ const STACK_HEADER_OPTIONS = {
 };
 
 function HomeStackNavigator() {
+  const { t } = useLanguage();
   return (
     <HomeStack.Navigator screenOptions={STACK_HEADER_OPTIONS}>
-      <HomeStack.Screen name="HomeMain" component={HomeScreen} options={{ headerShown: false, title: 'Trip' }} />
-      <HomeStack.Screen name="CityDetail" component={CityDetailScreen} options={{ title: '', headerBackTitle: 'Back' }} />
-      <HomeStack.Screen name="DayDetail" component={DayDetailScreen} options={({ route }: any) => ({ title: '', headerBackTitle: 'Back', animation: route.params?.direction === 'prev' ? 'slide_from_left' : 'slide_from_right' })} />
-      <HomeStack.Screen name="TicketViewer" component={TicketViewerScreen} options={{ title: 'Ticket', headerBackTitle: 'Back' }} />
-      <HomeStack.Screen name="LocationDetail" component={LocationDetailScreen} options={{ title: '', headerBackTitle: 'Back' }} />
+      <HomeStack.Screen name="HomeMain" component={HomeScreen} options={{ headerShown: false }} />
+      <HomeStack.Screen name="CityDetail" component={CityDetailScreen} options={{ title: '', headerBackTitle: t('nav.back') }} />
+      <HomeStack.Screen name="DayDetail" component={DayDetailScreen} options={({ route }: any) => ({ title: '', headerBackTitle: t('nav.back'), animation: route.params?.direction === 'prev' ? 'slide_from_left' : 'slide_from_right' })} />
+      <HomeStack.Screen name="TicketViewer" component={TicketViewerScreen} options={{ title: t('nav.ticket'), headerBackTitle: t('nav.back') }} />
+      <HomeStack.Screen name="LocationDetail" component={LocationDetailScreen} options={{ title: '', headerBackTitle: t('nav.back') }} />
     </HomeStack.Navigator>
   );
 }
 
 function InfoStackNavigator() {
+  const { t } = useLanguage();
   return (
     <InfoStack.Navigator screenOptions={{ headerShown: false, ...STACK_HEADER_OPTIONS }}>
       <InfoStack.Screen name="InfoMain" component={TripInfoScreen} />
-      <InfoStack.Screen name="TicketViewer" component={TicketViewerScreen} options={{ headerShown: true, title: 'Ticket', headerBackTitle: 'Back' }} />
+      <InfoStack.Screen name="TicketViewer" component={TicketViewerScreen} options={{ headerShown: true, title: t('nav.ticket'), headerBackTitle: t('nav.back') }} />
     </InfoStack.Navigator>
   );
 }
 
 function ItineraryStackNavigator() {
+  const { t } = useLanguage();
   return (
     <ItineraryStack.Navigator screenOptions={STACK_HEADER_OPTIONS}>
-      <ItineraryStack.Screen name="ItineraryList" component={ItineraryScreen} options={{ headerShown: false, title: 'Itinerary' }} />
-      <ItineraryStack.Screen name="DayDetail" component={DayDetailScreen} options={({ route }: any) => ({ title: '', headerBackTitle: 'Back', animation: route.params?.direction === 'prev' ? 'slide_from_left' : 'slide_from_right' })} />
-      <ItineraryStack.Screen name="TicketViewer" component={TicketViewerScreen} options={{ title: 'Ticket', headerBackTitle: 'Back' }} />
-      <ItineraryStack.Screen name="LocationDetail" component={LocationDetailScreen} options={{ title: '', headerBackTitle: 'Back' }} />
+      <ItineraryStack.Screen name="ItineraryList" component={ItineraryScreen} options={{ headerShown: false }} />
+      <ItineraryStack.Screen name="DayDetail" component={DayDetailScreen} options={({ route }: any) => ({ title: '', headerBackTitle: t('nav.back'), animation: route.params?.direction === 'prev' ? 'slide_from_left' : 'slide_from_right' })} />
+      <ItineraryStack.Screen name="TicketViewer" component={TicketViewerScreen} options={{ title: t('nav.ticket'), headerBackTitle: t('nav.back') }} />
+      <ItineraryStack.Screen name="LocationDetail" component={LocationDetailScreen} options={{ title: '', headerBackTitle: t('nav.back') }} />
     </ItineraryStack.Navigator>
   );
 }
@@ -66,6 +70,7 @@ const TAB_ICONS: Record<string, [IconName, IconName]> = {
 };
 
 export default function TabNavigator() {
+  const { t } = useLanguage();
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -78,11 +83,11 @@ export default function TabNavigator() {
         },
       })}
     >
-      <Tab.Screen name="Home" component={HomeStackNavigator} options={{ title: 'Trip' }} />
-      <Tab.Screen name="Itinerary" component={ItineraryStackNavigator} options={{ title: 'Days' }} />
-      <Tab.Screen name="Places" component={PlacesScreen} options={{ title: 'Places' }} />
-      <Tab.Screen name="Info" component={InfoStackNavigator} options={{ title: 'Info' }} />
-      <Tab.Screen name="Profile" component={ProfileScreen} options={{ title: 'Settings' }} />
+      <Tab.Screen name="Home" component={HomeStackNavigator} options={{ title: t('tab.trip') }} />
+      <Tab.Screen name="Itinerary" component={ItineraryStackNavigator} options={{ title: t('tab.days') }} />
+      <Tab.Screen name="Places" component={PlacesScreen} options={{ title: t('tab.places') }} />
+      <Tab.Screen name="Info" component={InfoStackNavigator} options={{ title: t('tab.info') }} />
+      <Tab.Screen name="Profile" component={ProfileScreen} options={{ title: t('tab.settings') }} />
     </Tab.Navigator>
   );
 }
