@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { View, StyleSheet, SectionList, TouchableOpacity } from 'react-native';
-import { Text, Card, ProgressBar } from 'react-native-paper';
+import { Text, Card, ProgressBar, SegmentedButtons } from 'react-native-paper';
+import TripMapScreen from './TripMapScreen';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -24,6 +25,7 @@ function buildSections(): Section[] {
 export default function PlacesScreen() {
   const { t, lang } = useLanguage();
   const [checked, setChecked] = useState<Set<string>>(new Set());
+  const [view, setView] = useState<'list' | 'map'>('list');
   const sections = buildSections();
 
   useEffect(() => {
@@ -47,13 +49,27 @@ export default function PlacesScreen() {
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
       <View style={styles.progressHeader}>
-        <Text variant="titleMedium" style={styles.progressTitle}>
-          {t('places.progress').replace('{done}', String(done)).replace('{total}', String(total))}
-        </Text>
-        <ProgressBar progress={done / total} color="#6750A4" style={styles.progressBar} />
+        <SegmentedButtons
+          value={view}
+          onValueChange={v => setView(v as 'list' | 'map')}
+          style={styles.toggle}
+          buttons={[
+            { value: 'list', label: 'Places', icon: 'format-list-bulleted' },
+            { value: 'map',  label: 'Route Map', icon: 'map-outline' },
+          ]}
+        />
+        {view === 'list' && (
+          <>
+            <Text variant="titleMedium" style={styles.progressTitle}>
+              {t('places.progress').replace('{done}', String(done)).replace('{total}', String(total))}
+            </Text>
+            <ProgressBar progress={done / total} color="#6750A4" style={styles.progressBar} />
+          </>
+        )}
       </View>
+      {view === 'map' && <TripMapScreen />}
 
-      <SectionList
+      {view === 'list' && <SectionList
         sections={sections}
         keyExtractor={item => item.id}
         contentContainerStyle={styles.list}
@@ -107,16 +123,17 @@ export default function PlacesScreen() {
             </TouchableOpacity>
           );
         }}
-      />
+      />}
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#f5f5f5' },
-  progressHeader: { backgroundColor: '#fff', padding: 16, elevation: 2 },
-  progressTitle: { marginBottom: 8, fontWeight: '600' },
-  progressBar: { height: 8, borderRadius: 4 },
+  progressHeader: { backgroundColor: '#fff', padding: 12, elevation: 2, gap: 10 },
+  toggle:        { marginBottom: 4 },
+  progressTitle: { fontWeight: '600' },
+  progressBar:   { height: 8, borderRadius: 4 },
   list: { padding: 12, paddingBottom: 32 },
   sectionHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 10, paddingHorizontal: 4 },
   sectionTitle: { fontWeight: '700' },
