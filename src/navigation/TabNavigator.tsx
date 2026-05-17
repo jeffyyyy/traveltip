@@ -17,9 +17,15 @@ const ItineraryStack = createNativeStackNavigator();
 const HomeStack = createNativeStackNavigator();
 const InfoStack = createNativeStackNavigator();
 
+const STACK_HEADER_OPTIONS = {
+  headerTitleStyle:     { fontSize: 15 },
+  headerBackTitleStyle: { fontSize: 13 },
+  headerStyle:          { height: 44 } as any,
+};
+
 function HomeStackNavigator() {
   return (
-    <HomeStack.Navigator>
+    <HomeStack.Navigator screenOptions={STACK_HEADER_OPTIONS}>
       <HomeStack.Screen name="HomeMain" component={HomeScreen} options={{ headerShown: false, title: 'Trip' }} />
       <HomeStack.Screen name="CityDetail" component={CityDetailScreen} options={{ title: '', headerBackTitle: 'Back' }} />
       <HomeStack.Screen name="DayDetail" component={DayDetailScreen} options={({ route }: any) => ({ title: '', headerBackTitle: 'Back', animation: route.params?.direction === 'prev' ? 'slide_from_left' : 'slide_from_right' })} />
@@ -31,7 +37,7 @@ function HomeStackNavigator() {
 
 function InfoStackNavigator() {
   return (
-    <InfoStack.Navigator screenOptions={{ headerShown: false }}>
+    <InfoStack.Navigator screenOptions={{ headerShown: false, ...STACK_HEADER_OPTIONS }}>
       <InfoStack.Screen name="InfoMain" component={TripInfoScreen} />
       <InfoStack.Screen name="TicketViewer" component={TicketViewerScreen} options={{ headerShown: true, title: 'Ticket', headerBackTitle: 'Back' }} />
     </InfoStack.Navigator>
@@ -40,7 +46,7 @@ function InfoStackNavigator() {
 
 function ItineraryStackNavigator() {
   return (
-    <ItineraryStack.Navigator>
+    <ItineraryStack.Navigator screenOptions={STACK_HEADER_OPTIONS}>
       <ItineraryStack.Screen name="ItineraryList" component={ItineraryScreen} options={{ headerShown: false, title: 'Itinerary' }} />
       <ItineraryStack.Screen name="DayDetail" component={DayDetailScreen} options={({ route }: any) => ({ title: '', headerBackTitle: 'Back', animation: route.params?.direction === 'prev' ? 'slide_from_left' : 'slide_from_right' })} />
       <ItineraryStack.Screen name="TicketViewer" component={TicketViewerScreen} options={{ title: 'Ticket', headerBackTitle: 'Back' }} />
