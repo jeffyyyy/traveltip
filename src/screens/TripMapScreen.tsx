@@ -1,8 +1,12 @@
 import React, { useRef, useState } from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Text } from 'react-native-paper';
-import MapView, { Marker, Polyline, Callout, Region } from 'react-native-maps';
+import MapView, { Marker, Polyline, Callout, Region, PROVIDER_GOOGLE } from 'react-native-maps';
 import { Ionicons } from '@expo/vector-icons';
+
+const MAP_PROVIDER = process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY
+  ? PROVIDER_GOOGLE
+  : undefined; // falls back to Apple Maps on iOS
 
 const CITIES = [
   { name: 'Barcelona', emoji: '🏛️', dates: 'May 20–24', lat: 41.3874, lng:  2.1686, order: 1 },
@@ -37,7 +41,7 @@ export default function TripMapScreen() {
 
   return (
     <View style={styles.container}>
-      <MapView ref={mapRef} style={styles.map} initialRegion={INITIAL_REGION}>
+      <MapView ref={mapRef} style={styles.map} provider={MAP_PROVIDER} initialRegion={INITIAL_REGION}>
 
         {/* Main route: Barcelona → Granada → Córdoba → Sevilla → Madrid */}
         <Polyline
