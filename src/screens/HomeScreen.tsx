@@ -1,7 +1,8 @@
 import React, { useMemo } from 'react';
-import { View, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, ScrollView, TouchableOpacity, Linking } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Text, Card, Chip } from 'react-native-paper';
+import { Ionicons } from '@expo/vector-icons';
 import { CITIES, TRIP_DAYS, TRIP_START, HOTELS } from '../data/spainTrip';
 import { CITY_NAMES_ZH } from '../data/spainTripZh';
 import { useLanguage } from '../context/LanguageContext';
@@ -98,6 +99,14 @@ export default function HomeScreen({ navigation }: any) {
               <Text variant="bodySmall" style={styles.hotelCity}>{lang === 'zh' ? (CITY_NAMES_ZH[h.city] ?? h.city) : h.city}</Text>
             </View>
             <Chip compact>{h.checkIn} – {h.checkOut}</Chip>
+            <TouchableOpacity onPress={() => {
+              const q = encodeURIComponent(`${h.name}, ${h.city}, Spain`);
+              const gUrl = `comgooglemaps://?q=${q}`;
+              const web = `https://www.google.com/maps/search/?api=1&query=${q}`;
+              Linking.canOpenURL(gUrl).then(ok => Linking.openURL(ok ? gUrl : web)).catch(() => Linking.openURL(web));
+            }} hitSlop={8} style={styles.mapBtn}>
+              <Ionicons name="map" size={18} color="#6750A4" />
+            </TouchableOpacity>
           </Card.Content>
         </Card>
       ))}
@@ -148,8 +157,9 @@ const styles = StyleSheet.create({
   cityName: { fontWeight: '600' },
   cityDays: { opacity: 0.6, textAlign: 'center', marginTop: 2 },
   hotelCard: { marginBottom: 8 },
-  hotelRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  hotelInfo: { flex: 1, marginRight: 8 },
+  hotelRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: 8 },
+  hotelInfo: { flex: 1 },
+  mapBtn:   { padding: 4 },
   hotelCity: { opacity: 0.6, marginTop: 2 },
   statsRow: { flexDirection: 'row', justifyContent: 'space-around', backgroundColor: '#fff', borderRadius: 12, padding: 16, marginTop: 8 },
   statBox: { alignItems: 'center' },

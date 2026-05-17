@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, ScrollView, TouchableOpacity, Linking } from 'react-native';
 import { Text, Card, SegmentedButtons, Chip } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
@@ -112,6 +112,14 @@ export default function TripInfoScreen({ navigation }: any) {
                     <Chip style={styles.nightsChip} textStyle={styles.chipText}>
                         {lang === 'zh' ? `${h.nights}晚` : `${h.nights}N`}
                       </Chip>
+                    <TouchableOpacity onPress={() => {
+                      const q = encodeURIComponent(`${h.name}, ${h.city}, Spain`);
+                      const gUrl = `comgooglemaps://?q=${q}`;
+                      const web = `https://www.google.com/maps/search/?api=1&query=${q}`;
+                      Linking.canOpenURL(gUrl).then(ok => Linking.openURL(ok ? gUrl : web)).catch(() => Linking.openURL(web));
+                    }} hitSlop={8}>
+                      <Ionicons name="map" size={18} color="#6A1B9A" />
+                    </TouchableOpacity>
                   </View>
                 </Card.Content>
               </Card>
