@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import {
-  View, ScrollView, StyleSheet, ActivityIndicator, TouchableOpacity,
+  View, ScrollView, StyleSheet, ActivityIndicator, TouchableOpacity, Linking,
 } from 'react-native';
 import { Text } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
-import * as Clipboard from 'expo-clipboard';
 import { fetchLocationDetails, LocationDetails, FoodRecommendation } from '../services/geminiService';
 
 export default function LocationDetailScreen({ route, navigation }: any) {
@@ -13,12 +12,13 @@ export default function LocationDetailScreen({ route, navigation }: any) {
   const [details, setDetails] = useState<LocationDetails | null>(null);
   const [loading, setLoading]   = useState(true);
   const [error, setError]       = useState<string | null>(null);
-  const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
-
-  const copyFoodName = async (name: string, index: number) => {
-    await Clipboard.setStringAsync(name);
-    setCopiedIndex(index);
-    setTimeout(() => setCopiedIndex(null), 1500);
+  const openInMaps = (name: string) => {
+    const query = encodeURIComponent(`${name}, ${city}, Spain`);
+    const googleUrl = `comgooglemaps://?q=${query}`;
+    const fallbackUrl = `https://www.google.com/maps/search/?api=1&query=${query}`;
+    Linking.canOpenURL(googleUrl)
+      .then(supported => Linking.openURL(supported ? googleUrl : fallbackUrl))
+      .catch(() => Linking.openURL(fallbackUrl));
   };
 
   const load = () => {
@@ -136,12 +136,8 @@ export default function LocationDetailScreen({ route, navigation }: any) {
             <View key={i} style={styles.foodCard}>
               <View style={styles.foodCardTop}>
                 <Text style={styles.foodName}>{item.name}</Text>
-                <TouchableOpacity onPress={() => copyFoodName(item.name, i)} hitSlop={8}>
-                  <Ionicons
-                    name={copiedIndex === i ? 'checkmark-circle' : 'copy-outline'}
-                    size={16}
-                    color={copiedIndex === i ? '#2E7D32' : '#7B1FA2'}
-                  />
+                <TouchableOpacity onPress={() => openInMaps(item.name)} hitSlop={8}>
+                  <Ionicons name="map" size={16} color="#7B1FA2" />
                 </TouchableOpacity>
               </View>
               <View style={styles.foodMetaRow}>
