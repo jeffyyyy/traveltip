@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Text as RNText } from 'react-native';
 import { Text } from 'react-native-paper';
 import MapView, { Marker, Polyline, Region, PROVIDER_GOOGLE } from 'react-native-maps';
 import { Ionicons } from '@expo/vector-icons';
@@ -9,13 +9,13 @@ const MAP_PROVIDER = process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY
   : undefined; // no API key → Apple Maps
 
 const CITIES = [
-  { name: '1. Barcelona',   dates: 'May 20–24',          lat: 41.3874, lng:  2.1686, main: true  },
-  { name: 'Montserrat',     dates: 'May 23 (day trip)',   lat: 41.5935, lng:  1.8369, main: false },
-  { name: 'Tossa de Mar',   dates: 'May 22 (day trip)',   lat: 41.7198, lng:  2.9331, main: false },
-  { name: '2. Granada',     dates: 'May 24–26',           lat: 37.1773, lng: -3.5986, main: true  },
-  { name: '3. Córdoba',     dates: 'May 26–27',           lat: 37.8882, lng: -4.7794, main: true  },
-  { name: '4. Sevilla',     dates: 'May 27–30',           lat: 37.3891, lng: -5.9845, main: true  },
-  { name: '5. Madrid',      dates: 'May 30–Jun 2',        lat: 40.4168, lng: -3.7038, main: true  },
+  { order: 1,    name: 'Barcelona',   dates: 'May 20–24',        lat: 41.3874, lng:  2.1686, main: true  },
+  { order: null, name: 'Tossa de Mar', dates: 'May 22 (day trip)', lat: 41.7198, lng:  2.9331, main: false },
+  { order: null, name: 'Montserrat',   dates: 'May 23 (day trip)', lat: 41.5935, lng:  1.8369, main: false },
+  { order: 2,    name: 'Granada',     dates: 'May 24–26',        lat: 37.1773, lng: -3.5986, main: true  },
+  { order: 3,    name: 'Córdoba',     dates: 'May 26–27',        lat: 37.8882, lng: -4.7794, main: true  },
+  { order: 4,    name: 'Sevilla',     dates: 'May 27–30',        lat: 37.3891, lng: -5.9845, main: true  },
+  { order: 5,    name: 'Madrid',      dates: 'May 30–Jun 2',     lat: 40.4168, lng: -3.7038, main: true  },
 ];
 
 const MAIN_ROUTE = CITIES.filter(c => c.main).map(c => ({ latitude: c.lat, longitude: c.lng }));
@@ -51,8 +51,15 @@ export default function TripMapScreen() {
             coordinate={{ latitude: city.lat, longitude: city.lng }}
             title={city.name}
             description={city.dates}
-            pinColor={city.main ? '#6750A4' : '#E65100'}
-          />
+            tracksViewChanges={false}
+          >
+            <View style={city.main ? styles.pinMain : styles.pinDay}>
+              {city.order !== null
+                ? <RNText style={styles.pinNumber}>{city.order}</RNText>
+                : <RNText style={styles.pinDot}>●</RNText>
+              }
+            </View>
+          </Marker>
         ))}
       </MapView>
 
@@ -88,6 +95,18 @@ const styles = StyleSheet.create({
     shadowColor: '#000', shadowOpacity: 0.15, shadowRadius: 4,
     shadowOffset: { width: 0, height: 2 }, elevation: 3,
   },
+  pinMain: {
+    width: 30, height: 30, borderRadius: 15,
+    backgroundColor: '#6750A4', borderWidth: 2, borderColor: '#fff',
+    alignItems: 'center', justifyContent: 'center',
+  },
+  pinDay: {
+    width: 22, height: 22, borderRadius: 11,
+    backgroundColor: '#E65100', borderWidth: 2, borderColor: '#fff',
+    alignItems: 'center', justifyContent: 'center',
+  },
+  pinNumber: { color: '#fff', fontWeight: '800', fontSize: 13 },
+  pinDot:    { color: '#fff', fontSize: 10, lineHeight: 14 },
   legendRow:  { flexDirection: 'row', alignItems: 'center', gap: 8 },
   legendDot:  { width: 12, height: 12, borderRadius: 6 },
   legendLine: { width: 24, height: 3, borderRadius: 2 },
