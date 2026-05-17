@@ -105,9 +105,8 @@ export const ACTIVITY_TITLES_ZH: Record<string, string> = {
 
   // Day 14 - Madrid → Barcelona
   'd14_0': '伯纳乌球场、英国宫 & 格兰大道',
-  'd14_1': '普拉多博物馆',
-  'd14_2': '马德里高铁去巴塞罗那',
-  'd14_3': '入住机场附近酒店',
+  'd14_1': '马德里高铁去巴塞罗那',
+  'd14_2': '入住机场附近酒店',
 
   // Day 15 - Barcelona (fly home)
   'd15_0': '前往机场',

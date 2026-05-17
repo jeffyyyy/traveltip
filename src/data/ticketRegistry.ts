@@ -45,7 +45,6 @@ function timeToKey(time: string): string {
 
 // Returns the ticket asset for a given city, date, and activity time, or null if none.
 export function getTicket(city: string, date: string, time: string): any | null {
-  const normalised = city.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-  const key = `${normalised}-${date}-${timeToKey(time)}`;
+  const key = `${city.toLowerCase()}-${date}-${timeToKey(time)}`;
   return TICKET_ASSETS[key] ?? null;
 }

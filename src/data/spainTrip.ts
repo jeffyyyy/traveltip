@@ -222,7 +222,6 @@ export const TRIP_DAYS: TripDay[] = [
     city: 'Madrid', cityEmoji: '👑',
     activities: [
       { time: '9:00 AM', title: 'Bernabéu Stadium, El Corte Inglés & Gran Vía', description: "Real Madrid stadium tour, famous department store, Madrid's main boulevard", type: 'sightseeing' },
-      { time: '5:00 PM', title: 'Prado Museum', description: 'Free entry last 2 hours before closing', type: 'sightseeing', isFreeEntry: true, freeEntryNote: 'Free last 2 hrs (6–8 PM)' },
       { time: '7:00 PM', title: 'Train Madrid → Barcelona', description: 'Madrid Atocha → Barcelona Sants overnight', type: 'transport' },
       { time: '8:00 PM', title: 'Check in Airport Hotel', description: 'Alberg Centre Esplai — near Barcelona airport', type: 'accommodation' },
     ],
