@@ -15,6 +15,7 @@ const CITIES = [
   { order: 2,    name: 'Granada',     dates: 'May 24–26',        lat: 37.1773, lng: -3.5986, main: true  },
   { order: 3,    name: 'Córdoba',     dates: 'May 26–27',        lat: 37.8882, lng: -4.7794, main: true  },
   { order: 4,    name: 'Sevilla',     dates: 'May 27–30',        lat: 37.3891, lng: -5.9845, main: true  },
+  { order: null, name: 'Ronda',       dates: 'May 29 (day trip)', lat: 36.7458, lng: -5.1619, main: false },
   { order: 5,    name: 'Madrid',      dates: 'May 30–Jun 2',     lat: 40.4168, lng: -3.7038, main: true  },
 ];
 
