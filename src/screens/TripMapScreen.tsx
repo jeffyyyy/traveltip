@@ -52,12 +52,16 @@ export default function TripMapScreen() {
             title={city.name}
             description={city.dates}
             tracksViewChanges={false}
+            anchor={{ x: 0.5, y: 1 }}
           >
-            <View style={city.main ? styles.pinMain : styles.pinDay}>
-              {city.order !== null
-                ? <RNText style={styles.pinNumber}>{city.order}</RNText>
-                : <RNText style={styles.pinDot}>●</RNText>
-              }
+            <View style={styles.pinWrapper}>
+              <View style={[styles.pinBubble, city.main ? styles.pinBubbleMain : styles.pinBubbleDay]}>
+                {city.order !== null
+                  ? <RNText style={styles.pinNumber}>{city.order}</RNText>
+                  : <RNText style={styles.pinIcon}>✦</RNText>
+                }
+              </View>
+              <View style={[styles.pinTail, city.main ? styles.pinTailMain : styles.pinTailDay]} />
             </View>
           </Marker>
         ))}
@@ -95,18 +99,26 @@ const styles = StyleSheet.create({
     shadowColor: '#000', shadowOpacity: 0.15, shadowRadius: 4,
     shadowOffset: { width: 0, height: 2 }, elevation: 3,
   },
-  pinMain: {
-    width: 30, height: 30, borderRadius: 15,
-    backgroundColor: '#6750A4', borderWidth: 2, borderColor: '#fff',
+  pinWrapper:     { alignItems: 'center' },
+  pinBubble: {
+    width: 34, height: 34, borderRadius: 17,
     alignItems: 'center', justifyContent: 'center',
+    borderWidth: 2.5, borderColor: '#fff',
+    shadowColor: '#000', shadowOpacity: 0.35, shadowRadius: 4,
+    shadowOffset: { width: 0, height: 2 }, elevation: 6,
   },
-  pinDay: {
-    width: 22, height: 22, borderRadius: 11,
-    backgroundColor: '#E65100', borderWidth: 2, borderColor: '#fff',
-    alignItems: 'center', justifyContent: 'center',
+  pinBubbleMain: { backgroundColor: '#6750A4' },
+  pinBubbleDay:  { backgroundColor: '#E65100', width: 26, height: 26, borderRadius: 13 },
+  pinTail: {
+    width: 0, height: 0,
+    borderLeftWidth: 7, borderRightWidth: 7, borderTopWidth: 10,
+    borderLeftColor: 'transparent', borderRightColor: 'transparent',
+    marginTop: -1,
   },
-  pinNumber: { color: '#fff', fontWeight: '800', fontSize: 13 },
-  pinDot:    { color: '#fff', fontSize: 10, lineHeight: 14 },
+  pinTailMain: { borderTopColor: '#6750A4' },
+  pinTailDay:  { borderTopColor: '#E65100', borderLeftWidth: 5, borderRightWidth: 5, borderTopWidth: 7 },
+  pinNumber: { color: '#fff', fontWeight: '800', fontSize: 14 },
+  pinIcon:   { color: '#fff', fontWeight: '800', fontSize: 11 },
   legendRow:  { flexDirection: 'row', alignItems: 'center', gap: 8 },
   legendDot:  { width: 12, height: 12, borderRadius: 6 },
   legendLine: { width: 24, height: 3, borderRadius: 2 },
