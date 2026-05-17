@@ -55,7 +55,7 @@ export default function ItineraryScreen({ navigation }: any) {
                     </Text>
                     <View style={styles.chips}>
                       {item.dayTrip && (
-                        <Chip icon="map-marker-path" style={styles.dayTripChip} textStyle={styles.dayTripText}>
+                        <Chip icon="map-marker" style={styles.dayTripChip} textStyle={styles.dayTripText}>
                           {t('general.dayTrip')}: {lang === 'zh' ? (CITY_NAMES_ZH[item.dayTrip] ?? item.dayTrip) : item.dayTrip}
                         </Chip>
                       )}
