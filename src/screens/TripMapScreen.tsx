@@ -6,7 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 const MAP_PROVIDER = process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY
   ? PROVIDER_GOOGLE
-  : undefined; // falls back to Apple Maps on iOS
+  : undefined; // no API key → Apple Maps
 
 const CITIES = [
   { name: '1. Barcelona',   dates: 'May 20–24',          lat: 41.3874, lng:  2.1686, main: true  },
