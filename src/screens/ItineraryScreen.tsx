@@ -3,6 +3,7 @@ import { View, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { Text, Card, Chip } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { TRIP_DAYS } from '../data/spainTrip';
+import { CITY_NAMES_ZH } from '../data/spainTripZh';
 import { useLanguage } from '../context/LanguageContext';
 
 const ACTIVITY_TYPE_COLORS: Record<string, string> = {
@@ -14,7 +15,7 @@ const ACTIVITY_TYPE_COLORS: Record<string, string> = {
 };
 
 export default function ItineraryScreen({ navigation }: any) {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
@@ -53,6 +54,11 @@ export default function ItineraryScreen({ navigation }: any) {
                       {item.activities.slice(0, 2).map(a => a.title).join(' · ')}
                     </Text>
                     <View style={styles.chips}>
+                      {item.dayTrip && (
+                        <Chip icon="map-marker-path" style={styles.dayTripChip} textStyle={styles.dayTripText}>
+                          {t('general.dayTrip')}: {lang === 'zh' ? (CITY_NAMES_ZH[item.dayTrip] ?? item.dayTrip) : item.dayTrip}
+                        </Chip>
+                      )}
                       <Chip style={styles.chip} textStyle={styles.chipText}>
                         {item.activities.length} {t('general.activities')}
                       </Chip>
@@ -90,8 +96,10 @@ const styles = StyleSheet.create({
   city: { color: '#555' },
   preview: { color: '#666', marginBottom: 8 },
   pastText: { opacity: 0.6 },
-  chips: { flexDirection: 'row', gap: 6 },
+  chips: { flexDirection: 'row', gap: 6, flexWrap: 'wrap' },
   chip: { backgroundColor: '#e8def8' },
-  freeChip: { backgroundColor: '#d4edda' },
+  freeChip:    { backgroundColor: '#d4edda' },
+  dayTripChip: { backgroundColor: '#fff3e0' },
+  dayTripText: { fontSize: 12, lineHeight: 18, color: '#E65100', fontWeight: '600' },
   chipText: { fontSize: 12, lineHeight: 18 },
 });

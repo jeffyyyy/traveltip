@@ -24,6 +24,7 @@ const en: TranslationMap = {
   'general.totalNights': 'total nights',
   'general.free': 'free',
   'general.activities': 'activities',
+  'general.dayTrip':    'Day Trip',
 
   // Home Screen
   'home.tripTitle': '🇪🇸 Spain Trip 2026',
@@ -108,6 +109,7 @@ const zh: TranslationMap = {
   'general.totalNights': '晚（总计）',
   'general.free': '免费',
   'general.activities': '项活动',
+  'general.dayTrip':    '一日游',
 
   // Home Screen
   'home.tripTitle': '🇪🇸 西班牙之旅 2026',

@@ -150,12 +150,14 @@ export const ATTRACTION_NAMES_ZH: Record<string, string> = {
 };
 
 export const CITY_NAMES_ZH: Record<string, string> = {
-  'Barcelona': '巴塞罗那',
-  'Granada':   '格拉纳达',
-  'Córdoba':   '科尔多瓦',
-  'Sevilla':   '塞维利亚',
-  'Ronda':     '龙达',
-  'Madrid':    '马德里',
+  'Barcelona':   '巴塞罗那',
+  'Tossa de Mar':'托萨德马尔',
+  'Montserrat':  '蒙特塞拉特',
+  'Granada':     '格拉纳达',
+  'Córdoba':     '科尔多瓦',
+  'Sevilla':     '塞维利亚',
+  'Ronda':       '龙达',
+  'Madrid':      '马德里',
 };
 
 export const FREE_ENTRY_ZH: Record<string, string> = {

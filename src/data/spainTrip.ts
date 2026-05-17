@@ -18,6 +18,7 @@ export interface TripDay {
   city: string;
   cityEmoji: string;
   activities: Activity[];
+  dayTrip?: string; // destination name if this is a day trip
 }
 
 export interface Attraction {
@@ -88,7 +89,7 @@ export const TRIP_DAYS: TripDay[] = [
   },
   {
     id: 'd3', date: '2026-05-22', dayLabel: 'May 22 (Fri)', dayNumber: 3,
-    city: 'Barcelona', cityEmoji: '🏛️',
+    city: 'Barcelona', cityEmoji: '🏛️', dayTrip: 'Tossa de Mar',
     activities: [
       { time: '8:45 AM', title: 'Bus to Tossa de Mar', description: 'Teisa/Alsa bus from Estació del Nord (Barcelona). ~90 min journey along the Costa Brava coast. Buy ticket at the station or online.', type: 'transport' },
       { time: '10:00 AM', title: 'Vila Vella & Museu Municipal', description: "Enter the medieval old town through the arched gate. Museu Municipal houses Roman mosaics and a collection of 20th-century paintings. Free to walk the old town streets.", type: 'sightseeing' },
@@ -101,7 +102,7 @@ export const TRIP_DAYS: TripDay[] = [
   },
   {
     id: 'd4', date: '2026-05-23', dayLabel: 'May 23 (Sat)', dayNumber: 4,
-    city: 'Barcelona', cityEmoji: '🏛️',
+    city: 'Barcelona', cityEmoji: '🏛️', dayTrip: 'Montserrat',
     activities: [
       { time: '7:45 AM', title: 'Head to Plaça Espanya', description: 'Take metro L1 or L3 to Espanya station. Head to the FGC (Ferrocarrils de la Generalitat) platform — separate from the metro, follow signs for FGC.', type: 'transport' },
       { time: '8:32 AM', title: 'FGC R5 Train to Montserrat', description: 'Departs Plaça Espanya every hour at :32. Get off at Aeri de Montserrat station (~65 min journey). Validate your all-inclusive Montserrat ticket before boarding.', type: 'transport' },
@@ -177,7 +178,7 @@ export const TRIP_DAYS: TripDay[] = [
   },
   {
     id: 'd10', date: '2026-05-29', dayLabel: 'May 29 (Fri)', dayNumber: 10,
-    city: 'Ronda', cityEmoji: '🌉',
+    city: 'Sevilla', cityEmoji: '💃', dayTrip: 'Ronda',
     activities: [
       { time: '8:00 AM', title: 'DAMAS Bus to Ronda', description: 'Board at Prado de San Sebastián bus station, Sevilla. ~2 hr journey through Andalusian hill country. Buy ticket at the station or online at damas-sa.es. Return buses at 16:30 & 18:00 — check schedule at the Ronda bus station.', type: 'transport' },
       { time: '10:15 AM', title: 'Puente Nuevo & El Tajo Gorge', description: "Ronda's iconic 18th-century bridge spanning 120 m across the El Tajo gorge. Cross the bridge and head to Mirador del Puente Nuevo (on the La Ciudad side) for the classic postcard view. The gorge drops 120 m straight down — genuinely breathtaking.", type: 'sightseeing' },
