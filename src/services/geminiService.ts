@@ -1,6 +1,10 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 const API_KEY = process.env.EXPO_PUBLIC_GEMINI_API_KEY ?? '';
 const BASE_URL = 'https://generativelanguage.googleapis.com/v1beta/models';
 const MODELS = ['gemini-3.1-flash-lite', 'gemini-2.0-flash'];
+const CACHE_PREFIX = 'gemini_cache__';
+const CACHE_TTL_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
 
 export interface FoodRecommendation {
   name: string;
@@ -23,7 +27,21 @@ export interface LocationDetails {
   funFact: string;
 }
 
-const cache = new Map<string, LocationDetails>();
+const memCache = new Map<string, LocationDetails>();
+
+async function readDiskCache(key: string): Promise<LocationDetails | null> {
+  try {
+    const raw = await AsyncStorage.getItem(CACHE_PREFIX + key);
+    if (!raw) return null;
+    const { ts, data } = JSON.parse(raw);
+    if (Date.now() - ts > CACHE_TTL_MS) { await AsyncStorage.removeItem(CACHE_PREFIX + key); return null; }
+    return data as LocationDetails;
+  } catch { return null; }
+}
+
+async function writeDiskCache(key: string, data: LocationDetails): Promise<void> {
+  try { await AsyncStorage.setItem(CACHE_PREFIX + key, JSON.stringify({ ts: Date.now(), data })); } catch {}
+}
 
 const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -100,7 +118,9 @@ export async function fetchLocationDetails(
   mode: 'default' | 'food' = 'default',
 ): Promise<LocationDetails> {
   const cacheKey = `${name}::${city}::${lang}::${mode}`;
-  if (cache.has(cacheKey)) return cache.get(cacheKey)!;
+  if (memCache.has(cacheKey)) return memCache.get(cacheKey)!;
+  const disk = await readDiskCache(cacheKey);
+  if (disk) { memCache.set(cacheKey, disk); return disk; }
 
   if (!API_KEY) throw new Error('EXPO_PUBLIC_GEMINI_API_KEY is not set in .env');
 
@@ -180,6 +200,7 @@ Respond ONLY with valid JSON — no markdown, no code fences — in this exact f
   } catch {
     throw new Error('Failed to parse Gemini response. Please try again.');
   }
-  cache.set(cacheKey, parsed);
+  memCache.set(cacheKey, parsed);
+  writeDiskCache(cacheKey, parsed);
   return parsed;
 }
